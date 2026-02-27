@@ -366,5 +366,10 @@ if ( !empty($conf['original_url_protection']) )
   add_event_handler('get_element_url', 'get_element_url_protection_handler');
   add_event_handler('get_src_image_url', 'get_src_image_url_protection_handler');
 }
+add_event_handler('check_restrictions_forbidden', 'album_password_handle_restriction');
 trigger_notify('init');
+
+// Must run after 'init' so that all plugins and user data are fully loaded.
+// Cannot use 'user_init' because that fires before these handlers are registered.
+album_password_adjust_forbidden($user);
 ?>

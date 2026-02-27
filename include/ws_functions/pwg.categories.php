@@ -969,6 +969,29 @@ UPDATE '.CATEGORIES_TABLE.'
     }  
   }
 
+  // Handle password parameter
+  if (isset($params['password']))
+  {
+    if (empty($params['password']))
+    {
+      // Remove password and share_token
+      $update['password'] = null;
+      $update['share_token'] = null;
+      $perform_update = true;
+    }
+    else
+    {
+      $update['password'] = password_hash(stripslashes($params['password']), PASSWORD_DEFAULT);
+      $perform_update = true;
+
+      // Auto-generate share_token if not already set
+      if (empty($category['share_token']))
+      {
+        $update['share_token'] = bin2hex(random_bytes(16));
+      }
+    }
+  }
+
   if ($perform_update)
   {
     single_update(
@@ -979,6 +1002,51 @@ UPDATE '.CATEGORIES_TABLE.'
   }
 
   pwg_activity('album', $params['category_id'], 'edit', array('fields' => implode(',', array_keys($update))));
+}
+
+/**
+ * API method
+ * Regenerates the share token for a password-protected album
+ * @param mixed[] $params
+ *    @option int category_id
+ */
+function ws_categories_regenerateShareToken($params, &$service)
+{
+  if (isset($params['pwg_token']) and get_pwg_token() != $params['pwg_token'])
+  {
+    return new PwgError(403, 'Invalid security token');
+  }
+
+  // does the category really exist?
+  $query = '
+SELECT *
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.$params['category_id'].'
+;';
+  $categories = query2array($query);
+  if (count($categories) == 0)
+  {
+    return new PwgError(404, 'category_id not found');
+  }
+
+  $category = $categories[0];
+
+  if (empty($category['password']))
+  {
+    return new PwgError(400, 'This album is not password-protected');
+  }
+
+  $new_token = bin2hex(random_bytes(16));
+
+  single_update(
+    CATEGORIES_TABLE,
+    array('share_token' => $new_token),
+    array('id' => $params['category_id'])
+  );
+
+  pwg_activity('album', $params['category_id'], 'edit', array('fields' => 'share_token'));
+
+  return array('share_token' => $new_token);
 }
 
 /**

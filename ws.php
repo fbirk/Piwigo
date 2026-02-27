@@ -898,12 +898,27 @@ function ws_addDefaultMethods( $arr )
         'apply_commentable_to_subalbums' =>  array('default'=>null,
                                 'flags'=>WS_PARAM_OPTIONAL,
                                 'info'=>'If true, set commentable to all sub album'),
+        'password' =>     array('default'=>null,
+                                'flags'=>WS_PARAM_OPTIONAL,
+                                'info'=>'Set a password to protect the album. Send empty string to remove.'),
         'pwg_token' => array('flags'=>WS_PARAM_OPTIONAL),
         ),
       'Changes properties of an album.<br><br><b>pwg_token</b> required if you want to use HTML in name/comment.',
       $ws_functions_root . 'pwg.categories.php',
       array('admin_only'=>true, 'post_only'=>true)
     );
+
+    $service->addMethod(
+        'pwg.categories.regenerateShareToken',
+        'ws_categories_regenerateShareToken',
+        array(
+          'category_id' =>  array('type'=>WS_TYPE_ID),
+          'pwg_token' => array('flags'=>WS_PARAM_OPTIONAL),
+          ),
+        'Regenerates the share token for a password-protected album, invalidating previous share links.',
+        $ws_functions_root . 'pwg.categories.php',
+        array('admin_only'=>true, 'post_only'=>true)
+      );
 
     $service->addMethod(
         'pwg.categories.setRank',

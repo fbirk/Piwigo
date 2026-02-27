@@ -27,6 +27,7 @@
 			</div>
 			<div class="description">
 				<h3>
+					{if $cat.HAS_PASSWORD}<span class="gallery-icon-lock" title="{'This album is password protected'|@translate}"> </span>{/if}
 					<a href="{$cat.URL}">{$cat.NAME}</a>
 					{if !empty($cat.icon_ts)}
 					<img title="{$cat.icon_ts.TITLE}" src="{$ROOT_URL}{$themeconf.icon_dir}/recent{if $cat.icon_ts.IS_CHILD_DATE}_by_child{/if}.png" alt="(!)">

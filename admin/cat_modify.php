@@ -387,6 +387,16 @@ if ($category['is_virtual'])
 
 $template->assign('PWG_TOKEN', get_pwg_token());
 
+// Password protection
+$has_password = !empty($category['password']);
+$template->assign('HAS_PASSWORD', $has_password);
+
+if ($has_password and !empty($category['share_token']))
+{
+  $share_url = get_absolute_root_url().'index.php?/category/'.$category['id'].'&token='.$category['share_token'];
+  $template->assign('SHARE_URL', $share_url);
+}
+
 trigger_notify('loc_end_cat_modify');
 
 //----------------------------------------------------------- sending html code

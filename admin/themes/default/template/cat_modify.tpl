@@ -30,6 +30,7 @@ const str_delete_orphans = '{'delete album and the %d orphan photos'|@translate|
 const str_delete_all_photos = '{'delete album and all %d photos, even the %d associated to other albums'|@translate|escape:javascript}';
 
 str_orphan = '{'This photo is an orphan'|@translate|escape:javascript}';
+const has_password = {if $HAS_PASSWORD}true{else}false{/if};
 str_album_comment_allow = '{'Comments allowed for sub-albums'|@translate|escape:javascript}';
 str_album_comment_disallow = '{'Comments disallowed for sub-albums'|@translate|escape:javascript}';
 const str_modal_ab = '{'New parent album'|@translate}';
@@ -167,10 +168,45 @@ const str_modal_ab = '{'New parent album'|@translate}';
             <input type="checkbox" name="locked" id="cat-locked" value="true" {if $IS_VISIBLE == 'false'}checked{/if}>
             <span class="slider round"></span>
           </label>
-          
-        </div>    
+
+        </div>
         <label class="switch-label" for="cat-locked"><span>{'Locked album'|@translate}</span> <i class="icon-help-circled tiptip" title="{'Locked albums are disabled for maintenance. Only administrators can view them in the gallery. Lock this album will also lock his Sub-albums'|@translate}" style="cursor:help"></i></label>
       </div>
+
+      <div class="cat-modify-switch-container">
+        <div class="switch-input">
+          <label class="switch">
+            <input type="checkbox" name="has_password" id="cat-has-password" value="true" {if $HAS_PASSWORD}checked{/if}>
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <label class="switch-label" for="cat-has-password"><span>{'Protect with password'|@translate}</span> <i class="icon-help-circled tiptip" title="{'Visitors must enter a password to access this album. Sub-albums inherit the password from their parent.'|@translate}" style="cursor:help"></i></label>
+      </div>
+
+      <div class="cat-modify-password-section" id="password-section" style="{if !$HAS_PASSWORD}display:none{/if}">
+        <div class="cat-modify-input-container">
+          <label for="cat-password">{if $HAS_PASSWORD}{'Change password'|@translate}{else}{'Album password'|@translate}{/if}</label>
+          <input type="password" id="cat-password" name="album_password" placeholder="{'Enter new password'|@translate}" autocomplete="new-password">
+        </div>
+
+        {if $HAS_PASSWORD}
+        <div class="cat-modify-input-container">
+          <span class="buttonLike" id="remove-password"><i class="icon-cancel"></i> {'Remove password'|@translate}</span>
+        </div>
+        {/if}
+
+        {if isset($SHARE_URL)}
+        <div class="cat-modify-input-container cat-share-link-section">
+          <label>{'Share link'|@translate}</label>
+          <div class="cat-share-link-row">
+            <input type="text" id="share-url" value="{$SHARE_URL}" readonly>
+            <span class="buttonLike" id="copy-share-link" title="{'Copy link'|@translate}"><i class="icon-docs"></i></span>
+            <span class="buttonLike" id="regenerate-share-link" title="{'Regenerate share link'|@translate}"><i class="icon-ccw"></i></span>
+          </div>
+        </div>
+        {/if}
+      </div>
+
     </div>
   </div>
 
@@ -278,5 +314,28 @@ const str_modal_ab = '{'New parent album'|@translate}';
 }
 .cat-modify-infos .cat-modify-info-content.directory::first-letter {
     text-transform: none;
+}
+
+.cat-modify-password-section {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background: #fafafa;
+}
+
+.cat-share-link-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.cat-share-link-row input[type="text"] {
+  flex: 1;
+  font-size: 12px;
+}
+
+.cat-share-link-section .buttonLike {
+  cursor: pointer;
 }
 </style>

@@ -331,6 +331,7 @@ if (count($categories) > 0)
                 @$category['comment'],
                 'subcatify_category_description')),
           'NAME'  => $name,
+          'HAS_PASSWORD' => !empty($category['password']),
         ) );
     if ($conf['index_new_icon'])
     {

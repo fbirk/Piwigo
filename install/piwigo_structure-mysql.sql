@@ -47,6 +47,8 @@ CREATE TABLE `piwigo_categories` (
   `dir` varchar(255) default NULL,
   `rank` smallint(5) unsigned default NULL,
   `status` enum('public','private') NOT NULL default 'public',
+  `password` varchar(255) default NULL,
+  `share_token` varchar(64) default NULL,
   `site_id` tinyint(4) unsigned default NULL,
   `visible` enum('true','false') NOT NULL default 'true',
   `representative_picture_id` mediumint(8) unsigned default NULL,
@@ -58,6 +60,7 @@ CREATE TABLE `piwigo_categories` (
   `lastmodified` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `categories_i3` (`permalink`),
+  UNIQUE KEY `idx_share_token` (`share_token`),
   KEY `categories_i2` (`id_uppercat`),
   KEY `lastmodified` (`lastmodified`)
 ) ENGINE=MyISAM;

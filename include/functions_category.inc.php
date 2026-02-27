@@ -41,7 +41,11 @@ function check_restrictions($category_id)
   // are not used because it's not necessary (filter <> restriction)
   if (in_array($category_id, explode(',', $user['forbidden_categories'])))
   {
-    access_denied();
+    $handled = trigger_change('check_restrictions_forbidden', false, $category_id);
+    if (!$handled)
+    {
+      access_denied();
+    }
   }
 }
 
@@ -58,7 +62,8 @@ function get_categories_menu()
 SELECT ';
   // From CATEGORIES_TABLE
   $query.= '
-  id, name, permalink, nb_images, global_rank,';
+  id, name, permalink, nb_images, global_rank,
+  password IS NOT NULL as has_password,';
   // From USER_CACHE_CATEGORIES_TABLE
   $query.= '
   date_last, max_date_last, count_images, count_categories';
@@ -124,6 +129,7 @@ WHERE '.$where.'
         'LEVEL' => substr_count($row['global_rank'], '.') + 1,
         'SELECTED' => ($selected_category!==null && $selected_category['id'] == $row['id']) ? true : false,
         'IS_UPPERCAT' => ($selected_category!==null && $selected_category['id_uppercat'] == $row['id']) ? true : false,
+        'HAS_PASSWORD' => !empty($row['has_password']),
         )
       );
     if ($conf['index_new_icon'])
@@ -716,6 +722,213 @@ SELECT
   }
 
   return $cats;
+}
+
+/**
+ * Adjusts forbidden_categories at runtime to include password-protected
+ * albums that haven't been unlocked in the current session.
+ * Also handles share token auto-unlock via $_GET['token'].
+ *
+ * @param array $user_param
+ */
+function album_password_adjust_forbidden($user_param)
+{
+  global $user;
+
+  // Admins bypass password protection entirely
+  if (is_admin())
+  {
+    return;
+  }
+
+  // Handle share token auto-unlock
+  if (isset($_GET['token']) and !empty($_GET['token']))
+  {
+    $token = pwg_db_real_escape_string($_GET['token']);
+    $query = '
+SELECT id
+  FROM '.CATEGORIES_TABLE.'
+  WHERE share_token = \''.$token.'\'
+;';
+    $result = pwg_query($query);
+    if ($row = pwg_db_fetch_assoc($result))
+    {
+      $unlocked = pwg_get_session_var('unlocked_albums', array());
+      if (!in_array($row['id'], $unlocked))
+      {
+        $unlocked[] = $row['id'];
+        pwg_set_session_var('unlocked_albums', $unlocked);
+      }
+
+      // Redirect to same URL without the token parameter (clean URL)
+      $redirect_url = preg_replace('/([?&])token=[^&]*(&|$)/', '$1', $_SERVER['REQUEST_URI']);
+      $redirect_url = rtrim($redirect_url, '?&');
+      redirect($redirect_url);
+    }
+  }
+
+  // Get all password-protected category IDs
+  $query = '
+SELECT id, uppercats
+  FROM '.CATEGORIES_TABLE.'
+  WHERE password IS NOT NULL
+;';
+  $protected_cats = query2array($query, 'id');
+
+  if (empty($protected_cats))
+  {
+    return;
+  }
+
+  $unlocked = pwg_get_session_var('unlocked_albums', array());
+
+  // Compute all descendants of unlocked albums (inheritance)
+  $all_unlocked = $unlocked;
+  if (!empty($unlocked))
+  {
+    foreach ($protected_cats as $cat_id => $cat)
+    {
+      if (in_array($cat_id, $all_unlocked))
+      {
+        continue;
+      }
+
+      $ancestors = explode(',', $cat['uppercats']);
+      foreach ($ancestors as $ancestor_id)
+      {
+        if (in_array((int)$ancestor_id, $unlocked))
+        {
+          $all_unlocked[] = $cat_id;
+          break;
+        }
+      }
+    }
+  }
+
+  // Locked = password-protected but NOT unlocked
+  $locked_ids = array_diff(array_keys($protected_cats), $all_unlocked);
+
+  if (empty($locked_ids))
+  {
+    return;
+  }
+
+  // Also add descendants of locked albums (even if they don't have their own password)
+  $descendant_locked = get_subcat_ids($locked_ids);
+  $all_locked = array_unique(array_merge($locked_ids, $descendant_locked));
+
+  // Append locked IDs to forbidden_categories
+  if (!empty($user['forbidden_categories']))
+  {
+    $existing = explode(',', $user['forbidden_categories']);
+    $merged = array_unique(array_merge($existing, $all_locked));
+    $user['forbidden_categories'] = implode(',', $merged);
+  }
+  else
+  {
+    $user['forbidden_categories'] = implode(',', $all_locked);
+  }
+}
+
+/**
+ * Handles the check_restrictions_forbidden hook.
+ * If the forbidden category has a password, redirect to the password prompt
+ * instead of showing the generic access denied page.
+ *
+ * @param bool $handled
+ * @param int $category_id
+ * @return bool
+ */
+function album_password_handle_restriction($handled, $category_id)
+{
+  global $user;
+
+  // Admins bypass
+  if (is_admin())
+  {
+    return false;
+  }
+
+  $query = '
+SELECT password
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.(int)$category_id.'
+;';
+  $result = pwg_query($query);
+  $row = pwg_db_fetch_assoc($result);
+
+  if ($row and !empty($row['password']))
+  {
+    // Check if a parent album has a password (inheritance: prompt for the
+    // topmost password-protected ancestor)
+    $cat_info = get_cat_info($category_id);
+    $ancestors = explode(',', $cat_info['uppercats']);
+    $prompt_cat_id = $category_id;
+
+    foreach ($ancestors as $ancestor_id)
+    {
+      if ((int)$ancestor_id == $category_id)
+      {
+        continue;
+      }
+      $q = '
+SELECT id, password
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.(int)$ancestor_id.'
+    AND password IS NOT NULL
+;';
+      $r = pwg_query($q);
+      if ($a = pwg_db_fetch_assoc($r))
+      {
+        // Check if this ancestor is already unlocked
+        $unlocked = pwg_get_session_var('unlocked_albums', array());
+        if (!in_array((int)$a['id'], $unlocked))
+        {
+          $prompt_cat_id = (int)$a['id'];
+          break;
+        }
+      }
+    }
+
+    $redirect_url = get_root_url().'album_password.php?cat_id='.$prompt_cat_id
+      .'&redirect='.urlencode($_SERVER['REQUEST_URI']);
+    redirect($redirect_url);
+    return true;
+  }
+
+  // Not a password-protected album — check if a parent is password-protected
+  $cat_info = get_cat_info($category_id);
+  if ($cat_info)
+  {
+    $ancestors = explode(',', $cat_info['uppercats']);
+    foreach ($ancestors as $ancestor_id)
+    {
+      if ((int)$ancestor_id == $category_id)
+      {
+        continue;
+      }
+      $q = '
+SELECT id, password
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.(int)$ancestor_id.'
+    AND password IS NOT NULL
+;';
+      $r = pwg_query($q);
+      if ($a = pwg_db_fetch_assoc($r))
+      {
+        $unlocked = pwg_get_session_var('unlocked_albums', array());
+        if (!in_array((int)$a['id'], $unlocked))
+        {
+          $redirect_url = get_root_url().'album_password.php?cat_id='.(int)$a['id']
+            .'&redirect='.urlencode($_SERVER['REQUEST_URI']);
+          redirect($redirect_url);
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 function get_related_categories_menu($items, $excluded_cat_ids=array())

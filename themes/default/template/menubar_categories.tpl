@@ -17,7 +17,7 @@
     {'</ul></li>'|@str_repeat:($ref_level-$cat.LEVEL)}
   {/if}
     <li {if $cat.SELECTED}class="selected"{/if}>
-      <a href="{$cat.URL}" {if $cat.IS_UPPERCAT}rel="up"{/if} title="{$cat.TITLE}">{$cat.NAME}</a>
+      <a href="{$cat.URL}" {if $cat.IS_UPPERCAT}rel="up"{/if} title="{$cat.TITLE}">{if $cat.HAS_PASSWORD}<span class="gallery-icon-lock" title="{'This album is password protected'|@translate}"> </span>{/if}{$cat.NAME}</a>
       {if $cat.count_images > 0}
       <span class="{if $cat.nb_images > 0}menuInfoCat{else}menuInfoCatByChild{/if} badge" title="{$cat.TITLE}">{$cat.count_images}</span>
       {/if}

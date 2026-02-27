@@ -2,6 +2,7 @@ jQuery(document).ready(function() {
   
   activateCommentDropdown();
   checkAlbumLock();
+  initPasswordSection();
   const ab = new AlbumSelector({ 
     selectedCategoriesIds: related_categories_ids,
     selectAlbum: add_related_category,
@@ -75,14 +76,7 @@ jQuery(document).ready(function() {
       url: "ws.php?format=json&method=pwg.categories.setInfo",
       type:"POST",
       dataType: "json",
-      data: {
-        category_id: album_id,
-        name: $("#cat-name").val(),
-        comment: $("#cat-comment").val(),
-        visible: $("#cat-locked").is(":checked") ? 'false' : 'true',
-        commentable: $("#cat-commentable").is(":checked") ? "true":"false",
-        pwg_token: pwg_token,
-      },
+      data: buildSaveData(),
       success:function(data) {
         if (data.stat == "ok") {
           save_button_set_loading(false)
@@ -484,6 +478,132 @@ function add_related_category({ album, newSelectedAlbum, getSelectedAlbum }) {
     newSelectedAlbum();
     parent_album = getSelectedAlbum()[0];
   }
+}
+
+function buildSaveData() {
+  var data = {
+    category_id: album_id,
+    name: $("#cat-name").val(),
+    comment: $("#cat-comment").val(),
+    visible: $("#cat-locked").is(":checked") ? 'false' : 'true',
+    commentable: $("#cat-commentable").is(":checked") ? "true" : "false",
+    pwg_token: pwg_token,
+  };
+
+  // Include password if the password checkbox is on and a new password is entered
+  if ($("#cat-has-password").is(":checked") && $("#cat-password").val()) {
+    data.password = $("#cat-password").val();
+  }
+
+  return data;
+}
+
+function initPasswordSection() {
+  // Toggle password section visibility
+  $("#cat-has-password").on("change", function () {
+    if ($(this).is(":checked")) {
+      $("#password-section").show();
+    } else {
+      $("#password-section").hide();
+    }
+  });
+
+  // Remove password
+  $("#remove-password").on("click", function () {
+    $.confirm({
+      title: 'Remove password',
+      content: 'Are you sure you want to remove the password from this album?',
+      buttons: {
+        confirm: {
+          text: 'Remove',
+          btnClass: 'btn-red',
+          action: function () {
+            jQuery.ajax({
+              url: "ws.php?format=json&method=pwg.categories.setInfo",
+              type: "POST",
+              dataType: "json",
+              data: {
+                category_id: album_id,
+                password: '',
+                pwg_token: pwg_token,
+              },
+              success: function (data) {
+                if (data.stat == "ok") {
+                  location.reload();
+                } else {
+                  $(".info-error").show();
+                  setTimeout(function () { $(".info-error").hide(); }, 5000);
+                }
+              },
+              error: function () {
+                $(".info-error").show();
+                setTimeout(function () { $(".info-error").hide(); }, 5000);
+              },
+            });
+          },
+        },
+        cancel: {
+          text: str_cancel,
+        },
+      },
+      ...jConfirm_confirm_options,
+    });
+  });
+
+  // Copy share link
+  $("#copy-share-link").on("click", function () {
+    var url = $("#share-url").val();
+    navigator.clipboard.writeText(url).then(function () {
+      var temp = $(".info-message").text();
+      $(".info-message").text("Link copied!");
+      $(".info-message").show();
+      setTimeout(function () {
+        $(".info-message").hide();
+        $(".info-message").text(temp);
+      }, 3000);
+    });
+  });
+
+  // Regenerate share link
+  $("#regenerate-share-link").on("click", function () {
+    $.confirm({
+      title: 'Regenerate share link',
+      content: 'This will invalidate the current share link. Old QR codes and links will stop working.',
+      buttons: {
+        confirm: {
+          text: 'Regenerate',
+          btnClass: 'btn-red',
+          action: function () {
+            jQuery.ajax({
+              url: "ws.php?format=json&method=pwg.categories.regenerateShareToken",
+              type: "POST",
+              dataType: "json",
+              data: {
+                category_id: album_id,
+                pwg_token: pwg_token,
+              },
+              success: function (data) {
+                if (data.stat == "ok") {
+                  location.reload();
+                } else {
+                  $(".info-error").show();
+                  setTimeout(function () { $(".info-error").hide(); }, 5000);
+                }
+              },
+              error: function () {
+                $(".info-error").show();
+                setTimeout(function () { $(".info-error").hide(); }, 5000);
+              },
+            });
+          },
+        },
+        cancel: {
+          text: str_cancel,
+        },
+      },
+      ...jConfirm_confirm_options,
+    });
+  });
 }
 
 function activateCommentDropdown() {

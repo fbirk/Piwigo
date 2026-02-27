@@ -21,3 +21,4 @@
 # Eclipse
 .settings
 .project
+.claude/settings.local.json
