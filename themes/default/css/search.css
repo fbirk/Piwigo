@@ -482,7 +482,7 @@
 
 .date_posted-option .accordion-toggle:hover,
 .date_created-option .accordion-toggle:hover{
-  color:#ff7700;
+  color:#a27b5b;
   cursor:pointer;
 }
 
@@ -874,7 +874,7 @@
 
 .slider-info
 {
-  color: #ff7700;
+  color: #a27b5b;
   font-weight: bold;
 }
 
@@ -907,14 +907,14 @@
 
 .ui-slider .ui-slider-range 
 {
-  background: rgba(255, 166, 70, 0.9);
+  background: rgba(162, 123, 91, 0.9);
   margin-top: -1px;
-  border: 1px solid #ffaf58;
+  border: 1px solid #b8956e;
 }
 
 .ui-slider-range.ui-widget-header.ui-corner-all
 {
-  border: 1px solid #ffaf58;
+  border: 1px solid #b8956e;
   padding:1px 0;
 }
 
@@ -928,30 +928,30 @@
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default
 {
-  border: 1px solid #ffaf58;
-  background: #ffaf58;
+  border: 1px solid #b8956e;
+  background: #b8956e;
 }
 
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
 .ui-widget-header .ui-state-hover
 {
-  background: #ffaf58
+  background: #b8956e
 }
 
 .ui-state-focus,
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus
 {
-  border: 1px solid #ffaf58;
-  background: #ffaf58
+  border: 1px solid #b8956e;
+  background: #b8956e
 }
 
 .ui-state-active, 
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active 
 {
-  background: #ffaf58
+  background: #b8956e
 }
 
 .disableSlider{
@@ -990,7 +990,7 @@
 
 .no_filtered_photos {
   font-weight:700;
-  color: #ee8800;
+  color: #a27b5b;
   padding:30px;
   text-align:center;
 }

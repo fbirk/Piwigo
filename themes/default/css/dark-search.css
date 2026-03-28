@@ -25,7 +25,7 @@
 .tags-found-popin .mcs-popin-title,
 .albums-found-popin .mcs-popin-title,
 .quick-search-headers .mcs-popin-title {
-  color: #ff7700bb;
+  color: #a27b5bbb;
 }
 
 .mcs-popin-desc {
@@ -34,7 +34,7 @@
 
 .tags-found-container .tag-item,
 .albums-found-container .album-item {
-  background: #F4AB4F;
+  background: #c4a68a;
   color: #525252;
 }
 
@@ -55,13 +55,13 @@
 
 .filter-manager,
 .filter-validate {
-  background: #ff7700bb;
-  color: #ffeacf;
+  background: #a27b5bbb;
+  color: #ede4db;
 }
 
 .filter-manager:hover,
 .filter-validate:hover {
-  background: #ff7700bb;
+  background: #a27b5bbb;
 }
 
 .filter-cancel {
@@ -93,13 +93,13 @@
 }
 
 .mcs-container .filter-filled {
-  background: #ff7700bb;
+  background: #a27b5bbb;
   border: none!important;
-  color: #ffeacf!important;
+  color: #ede4db!important;
 }
 
 .mcs-container .filter-filled .filter-icon {
-  color: #ffeacf!important;
+  color: #ede4db!important;
 }
 
 .word-help {
@@ -147,7 +147,7 @@
 .date_posted-badge,
 .ratios-option label .ratio-badge,
 .ratings-option label .ratings-badge {
-  background: #ff7700bb;
+  background: #a27b5bbb;
   color: white;
 }
 
@@ -171,7 +171,7 @@
 .date_posted-option .selected .accordion-toggle,
 .ratios-option input:checked + label,
 .ratings-option input:checked + label{
-  background: rgba(244, 171, 79, 0.17);
+  background: rgba(162, 123, 91, 0.17);
 }
 
 .head-button-2 {
@@ -186,7 +186,7 @@
 }
 
 .breadcrumb-item {
-  background-color: #f4ab4f;
+  background-color: #c4a68a;
 }
 
 .breadcrumb-item:hover .icon-cancel-circled{
@@ -202,7 +202,7 @@
 }
 
 .breadcrumb-item .icon-cancel-circled:hover {
-  color: #ff7700bb;
+  color: #a27b5bbb;
 }
 
 .linkedAlbumPopInContainer {
@@ -224,7 +224,7 @@
 }
 
 .clear-all.clickable {
-  color: #ff7700bb;
+  color: #a27b5bbb;
 }
 
 .ClosePopIn:hover {
@@ -232,7 +232,7 @@
 }
 
 .mcs-no-result .text span:first-child{
-  color: #ff7700bb;
+  color: #a27b5bbb;
 }
 
 .mcs-no-result .text span:last-child{
@@ -240,7 +240,7 @@
 }
 
 .filter-form .filter-form-title {
-  color: #ff7700bb;
+  color: #a27b5bbb;
 }
 
 
@@ -269,7 +269,7 @@
 .filter-author-form .selectize-control.multi .selectize-input [data-value].active,
 .filter-added_by-form .selectize-control.multi .selectize-input > div,
 .filter-added_by-form .selectize-control.multi .selectize-input [data-value].active {
-  background: #ffa835;
+  background: #c4a68a;
   color: black;
 }
 

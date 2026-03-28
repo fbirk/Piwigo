@@ -47,7 +47,7 @@ border:2px solid #dddddd;
 }
 
 .bigButton a:hover {
-    background-color:#ff7700;
+    background-color:#a27b5b;
     outline:none;
     color:#fff;
     border:none;
@@ -68,11 +68,11 @@ border:2px solid #dddddd;
 #deactivate A {
     text-decoration:none;
     border:none;
-    color:#f70;
+    color:#a27b5b;
 }
 
 #deactivate A:hover {
-  border-bottom:1px dotted #f70;
+  border-bottom:1px dotted #a27b5b;
 }
 
 #quickconnect {
@@ -98,7 +98,7 @@ border:2px solid #dddddd;
 
 #quickconnect input[type="text"]:focus, #quickconnect input[type="password"]:focus {
   background-color:#fff;
-  border:2px solid #ff7700;
+  border:2px solid #a27b5b;
 }
 
 #quickconnect input[type="submit"] {
@@ -113,7 +113,7 @@ border:2px solid #dddddd;
 }
 
 #quickconnect input[type="submit"]:hover {
-  background-color:#ff7700;
+  background-color:#a27b5b;
   color:white;
 }
 </style>

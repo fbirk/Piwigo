@@ -30,7 +30,7 @@ html{
   height:100%;
   min-height:100vh;
   margin:0;
-  font-family: 'Open_Sans', sans-serif;
+  font-family: 'Lato', 'Open_Sans', sans-serif;
 }
 
 #theIdentificationPage #the_page,
@@ -179,7 +179,7 @@ select {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-family: 'Open_Sans', sans-serif;
+  font-family: 'Lato', 'Open_Sans', sans-serif;
   font-size: 16px;
   margin-bottom:5px;
   margin-left:20px;

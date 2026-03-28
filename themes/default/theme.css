@@ -490,7 +490,7 @@ BODY {
 	margin: 5px;
 	padding: 0;
 	font-size: 0.8em;
-	font-family: Arial,Helvetica,sans-serif;
+	font-family: 'Lato', Arial, Helvetica, sans-serif;
 	min-width: 60em;  /* ~ 3* #menubar width; width of the page before getting a scrollbar; IE6 doesn't get that*/
 }
 
@@ -522,7 +522,7 @@ A {
 	text-decoration:none;
 }
 A:hover {
-	border-bottom: 1px solid #858460;
+	border-bottom: 1px solid #a27b5b;
 }
 A.pwg-state-default:hover {
 	border-bottom: 0; /*reset above for icons*/
@@ -713,16 +713,16 @@ IMG.ui-datepicker-trigger {
 INPUT[type="text"], INPUT[type="password"], INPUT[type="button"],
 INPUT[type="submit"], INPUT[type="reset"], INPUT[type="file"] {
 	color: #000;
-	background-color: #d3d3d3;	/* lightgrey */
+	background-color: #dcd7c9;	/* cream */
 }
 
 SELECT, TEXTAREA {
 	color: #000;
-	background-color: #d3d3d3;	/* lightgrey */
+	background-color: #dcd7c9;	/* cream */
 }
 
 INPUT:focus, SELECT:focus, TEXTAREA:focus {
-	background-color: #f5f5f5;	/* whitesmoke */
+	background-color: #f9f9fb;
 }
 
 /* some theme set a border on INPUT  which is not pretty for radio/checkbox */
@@ -758,15 +758,15 @@ INPUT[type="radio"], INPUT[type="checkbox"] {
 .header_msgs {
 	text-align:center;
 	font-weight: bold;
-	color:#696969;	/* dimgray */
-	background-color: #d3d3d3;
+	color:#3b3b3d;
+	background-color: #dcd7c9;
 	margin: 1px;
 	padding: 1px;
 }
 
 /* Header notes box */
 .header_notes {
-	border: 1px solid #aaa;
+	border: 1px solid #a27b5b;
 	text-align: center;
 	background-image: url(icon/note.png);
 	background-repeat: no-repeat;
@@ -870,7 +870,7 @@ because of this it needs to specifically be added to each theme */
 }
 
 .mcs-side-results > div {
-  background: #555;
+  background: #3f4e4f;
   box-shadow: 0px 2px #00000024;
   position: relative;
   padding: 4px 10px;
@@ -880,13 +880,13 @@ because of this it needs to specifically be added to each theme */
   align-items: center;
   cursor: pointer;
   margin-right: 15px;
-  color: #ccc;
+  color: #dcd7c9;
   width: fit-content;
 }
 
 .mcs-side-results > div:hover {
-  background: #444;
-  color: #777;
+  background: #2c3639;
+  color: #ac7b84;
 }
 .mcs-side-results > div:active {
   transform: translateY(2px);
@@ -906,7 +906,7 @@ because of this it needs to specifically be added to each theme */
   margin-left: 5px;
   padding: 2px 5px!important;
   font-size: 10px;
-  background: #777;
+  background: #a27b5b;
 }
 
 .action-buttons{
@@ -927,17 +927,17 @@ span.related-tags{
   padding:4px 12px;
   margin:3px;
   border-radius:15px;
-  background-color:#f5f5f5
+  background-color:#f9f9fb
 }
 
 span.related-tags a{
   font-weight:700;
-  color:#787878;
+  color:#3b3b3d;
   text-decoration:none;
 }
 
 span.related-tags:hover{
-  background-color:#e5e5e5;
+  background-color:#dcd7c9;
 }
 
 span.related-tags .tag-counter{
@@ -959,9 +959,9 @@ span.related-tags .tag-counter{
 }
 
 #selected-tags-container .selected-related-tag {
-  background-color: #FCEAD2;
-  border:1px solid #FF7700;
-  color:#ff7700;
+  background-color: #ede4db;
+  border:1px solid #a27b5b;
+  color:#a27b5b;
   border-radius:15px;
   padding:2px 10px;
   padding-right:5px;
@@ -976,7 +976,7 @@ span.related-tags .tag-counter{
   font-weight: 700;
   font-style: Bold;
   font-size: 12px;
-  color:#ff7700;
+  color:#a27b5b;
   }
 
 #selected-tags-container .selected-related-tag a.selected-related-tag-remove:hover{
