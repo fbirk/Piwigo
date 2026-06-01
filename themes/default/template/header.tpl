@@ -80,7 +80,13 @@
 </div>
 {/if}
 
-<div id="theHeader">{$PAGE_BANNER|default:''}</div>
+<div id="theHeader" class="fotobox-header">
+  <div class="fotobox-header__container">
+    <a href="/" class="fotobox-header__logo" aria-label="Fotobox - Startseite">
+      <img src="{$ROOT_URL}{$themeconf.img_dir}/Logo_Fotobox_light.svg" alt="Fotobox">
+    </a>
+  </div>
+</div>
 
 {if not empty($header_notes)}
 <div class="header_notes">

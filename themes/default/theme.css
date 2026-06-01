@@ -1003,3 +1003,98 @@ span.related-tags .tag-counter{
     flex-direction:column;
   }
 }
+
+/* ==========================================================================
+   Fotobox styling — match FotoboxHomepage (dark header + album list page)
+   ========================================================================== */
+:root {
+	--fb-primary-dark: #2c3639;
+	--fb-primary-darker: #242c2d;
+	--fb-bg-dark: #3b3b3d;
+	--fb-secondary: #dcd7c9;
+	--fb-highlight: #a27b5b;
+	--fb-text-inverse: #f9f9fb;
+}
+
+/* Fotobox header bar (global, on every gallery page) */
+#theHeader.fotobox-header {
+	position: sticky;
+	top: 0;
+	z-index: 200;
+	text-align: left;
+	padding: 0;
+	background-color: var(--fb-primary-darker);
+}
+
+.fotobox-header__container {
+	display: flex;
+	align-items: center;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 1rem 1.5rem;
+	min-height: 70px;
+}
+
+.fotobox-header__logo {
+	display: inline-flex;
+	align-items: center;
+}
+
+.fotobox-header__logo img {
+	height: 50px;
+	width: auto;
+	display: block;
+}
+
+.fotobox-header__logo:hover {
+	border-bottom: none;
+	opacity: 0.9;
+}
+
+/* Album-listing page: dark slate background (scoped via body id from index.php) */
+body#theCategoryPage {
+	background-color: var(--fb-bg-dark);
+	color: var(--fb-secondary);
+}
+
+/* Album list rendered as plain hyperlinks */
+ul.fotobox-albums {
+	list-style: none;
+	max-width: 800px;
+	margin: 2rem auto;
+	padding: 0 1.5rem;
+}
+
+.fotobox-album {
+	border-bottom: 1px solid rgba(220, 215, 201, 0.15);
+}
+
+.fotobox-album__link {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem 0.5rem;
+	font-family: 'Lato', Arial, Helvetica, sans-serif;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--fb-secondary);
+	text-decoration: none;
+	transition: color 150ms ease, padding-left 150ms ease;
+}
+
+.fotobox-album__link:hover {
+	color: var(--fb-highlight);
+	padding-left: 1rem;
+	border-bottom: none;
+}
+
+.fotobox-album__name {
+	flex: 0 1 auto;
+}
+
+.fotobox-album__count {
+	margin-left: auto;
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--fb-highlight);
+}
