@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="222.85672"
+   height="86"
+   viewBox="0 0 222.85672 86"
+   version="1.1"
+   xml:space="preserve"
+   style="clip-rule:evenodd;fill-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2"
+   id="svg9"
+   sodipodi:docname="Logo_Fotobox_light.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs9" /><sodipodi:namedview
+   id="namedview9"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="3.325"
+   inkscape:cx="120.30075"
+   inkscape:cy="119.3985"
+   inkscape:window-width="1920"
+   inkscape:window-height="1006"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg9" />
+	<g
+   id="g7"
+   transform="translate(-87.782,-76.5)">
+		<g
+   id="g6">
+			<path
+   d="m 151.782,86.5 v 65 c 0,5.519 -4.481,10 -10,10 h -44 c -5.519,0 -10,-4.481 -10,-10 v -65 c 0,-5.519 4.481,-10 10,-10 h 44 c 5.519,0 10,4.481 10,10 z"
+   style="fill:#3f4e4f"
+   id="path1" />
+			<path
+   d="m 141.782,92.5 v 26 c 0,3.311 -2.689,6 -6,6 h -32 c -3.311,0 -6,-2.689 -6,-6 v -26 c 0,-3.311 2.689,-6 6,-6 h 32 c 3.311,0 6,2.689 6,6 z"
+   style="fill:#dcd7c9"
+   id="path2" />
+			<circle
+   cx="119.782"
+   cy="105.5"
+   r="11"
+   style="fill:#3f4e4f"
+   id="circle2" />
+			<circle
+   cx="119.782"
+   cy="105.5"
+   r="3.5"
+   style="fill:#a27b5b"
+   id="circle3" />
+			<circle
+   cx="133.782"
+   cy="93.5"
+   r="2.5"
+   style="fill:#3f4e4f"
+   id="circle4" />
+			<rect
+   x="107.782"
+   y="134.5"
+   width="24"
+   height="28"
+   style="fill:#ffffff;fill-rule:nonzero"
+   id="rect4" />
+			<path
+   d="m 126.782,140.5 v 7 c 0,0.552 -0.448,1 -1,1 h -12 c -0.552,0 -1,-0.448 -1,-1 v -7 c 0,-0.552 0.448,-1 1,-1 h 12 c 0.552,0 1,0.448 1,1 z"
+   style="fill:#a27b5b"
+   id="path4" />
+			<path
+   d="m 126.782,152.5 v 7 c 0,0.552 -0.448,1 -1,1 h -12 c -0.552,0 -1,-0.448 -1,-1 v -7 c 0,-0.552 0.448,-1 1,-1 h 12 c 0.552,0 1,0.448 1,1 z"
+   style="fill:#a27b5b"
+   id="path5" />
+			<path
+   d="m 135.782,133.5 c 0,1.104 -0.896,2 -2,2 h -28 c -1.104,0 -2,-0.896 -2,-2 0,-1.104 0.896,-2 2,-2 h 28 c 1.104,0 2,0.896 2,2 z"
+   style="fill:#dcd7c9"
+   id="path6" />
+		</g>
+	</g>
+	<g
+   transform="matrix(2.598435,0,0,2.5531956,-83.39996,-410.03039)"
+   id="g9">
+		<text
+   x="56.650002"
+   y="169.718"
+   style="font-size:12px;font-family:MajorMonoDisplay-Regular, 'Major Mono Display', monospace;fill:#dcd7c9"
+   id="text7">Fabians</text>
+		<text
+   x="56.650002"
+   y="181.718"
+   style="font-size:12px;font-family:MajorMonoDisplay-Regular, 'Major Mono Display', monospace;fill:#dcd7c9"
+   id="text8">Fotobox</text>
+		<g
+   transform="matrix(12,0,0,12,118.80984,193.71776)"
+   id="g8"
+   inkscape:label="g8"
+   style="display:inline;opacity:1" />
+		<text
+   x="56.650002"
+   y="193.718"
+   style="font-size:12px;font-family:MajorMonoDisplay-Regular, 'Major Mono Display', monospace;fill:#dcd7c9"
+   id="text9">verleih</text>
+	</g>
+</svg>

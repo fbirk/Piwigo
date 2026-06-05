@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Fotobox overrides for the modus theme
+   Restyles the album view to match the Fotobox homepage:
+   dark slate page, cream text, bronze links, album names as plain hyperlinks,
+   and a homepage logo in the header.
+
+   Loaded last in header.tpl, so it wins on source order; key rules also use
+   high specificity / !important to override the modus "newspaper" skin.
+   ========================================================================== */
+:root {
+  --fb-primary-dark: #2c3639;
+  --fb-primary-darker: #242c2d;
+  --fb-bg-dark: #3b3b3d;
+  --fb-secondary: #dcd7c9;
+  --fb-highlight: #a27b5b;
+  --fb-text-inverse: #f9f9fb;
+}
+
+/* --- Dark page background (modus newspaper skin sets body{background:#fff}) --- */
+body#theCategoryPage {
+  background-color: var(--fb-bg-dark) !important;
+  color: var(--fb-secondary) !important;
+}
+body#theCategoryPage #content,
+body#theCategoryPage .content {
+  background-color: transparent !important;
+  color: var(--fb-secondary) !important;
+}
+
+/* --- Header bar + logo --- */
+#theHeader.fotobox-header {
+  background-color: var(--fb-primary-darker) !important;
+  margin: 0 !important;
+  padding: 1rem 1.5rem !important;
+  text-align: left !important;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+}
+.fotobox-logo-link,
+.fotobox-logo-link:hover {
+  border: 0 !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+}
+img.fotobox-logo {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+/* --- Breadcrumb / titles on dark --- */
+body#theCategoryPage #breadcrumb,
+body#theCategoryPage #breadcrumb a,
+body#theCategoryPage .titrePage,
+body#theCategoryPage h2,
+body#theCategoryPage h3 {
+  color: var(--fb-secondary) !important;
+}
+
+/* --- Album list rendered as plain hyperlinks (our template override) --- */
+ul.fotobox-albums {
+  list-style: none;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  text-align: left;
+}
+.fotobox-album {
+  border-bottom: 1px solid rgba(220, 215, 201, 0.15);
+}
+.fotobox-album__link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fb-secondary) !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  transition: color 150ms ease, padding-left 150ms ease;
+}
+.fotobox-album__link:hover {
+  color: var(--fb-highlight) !important;
+  padding-left: 1rem;
+}
+.fotobox-album__name {
+  flex: 0 1 auto;
+}
+.fotobox-album__count {
+  margin-left: auto;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--fb-highlight) !important;
+}
+
+/* --- Generic links on the album page --- */
+body#theCategoryPage a {
+  color: var(--fb-highlight);
+}
