@@ -100,3 +100,9 @@ ul.fotobox-albums {
 body#theCategoryPage a {
   color: var(--fb-highlight);
 }
+
+/* --- Fotobox: remove the "Startseite" / calendar menubar entirely --- */
+#menubar,
+#menuSwitcher {
+  display: none !important;
+}
