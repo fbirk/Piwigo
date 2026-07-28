@@ -69,3 +69,83 @@
 {/if}
 {* fotobox: always show the homepage logo, linking back to the Fotobox homepage root *}
 <div id="theHeader" class="fotobox-header"><a href="/" class="fotobox-logo-link" aria-label="Fotobox - Startseite"><img class="fotobox-logo" src="{$ROOT_URL}themes/{$themeconf.id}/images/Logo_Fotobox_light.svg" alt="Fotobox"></a></div>
+
+{* fotobox: album ZIP-download button + confirmation modal (album pages only) *}
+<script>
+(function () {
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+  ready(function () {
+    var body = document.body;
+    if (!body || body.id !== 'theCategoryPage') { return; }
+
+    var m = /(?:^|\s)category-(\d+)(?:\s|$)/.exec(body.className || '');
+    if (!m) { return; }
+    var catId = m[1];
+    var base = '{$ROOT_URL}album_download.php';
+
+    // --- button ---
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fotobox-download-btn';
+    btn.textContent = 'Album herunterladen';
+
+    var content = document.getElementById('content') || body;
+    if (content.firstChild) { content.insertBefore(btn, content.firstChild); }
+    else { content.appendChild(btn); }
+
+    // --- modal ---
+    var overlay = document.createElement('div');
+    overlay.className = 'fotobox-modal';
+    overlay.innerHTML =
+      '<div class="fotobox-modal__panel" role="dialog" aria-modal="true">' +
+        '<p class="fotobox-modal__text"></p>' +
+        '<div class="fotobox-modal__actions">' +
+          '<button type="button" class="fotobox-modal__cancel">Abbrechen</button>' +
+          '<button type="button" class="fotobox-modal__confirm">Herunterladen</button>' +
+        '</div>' +
+      '</div>';
+    body.appendChild(overlay);
+
+    var textEl = overlay.querySelector('.fotobox-modal__text');
+    var cancelEl = overlay.querySelector('.fotobox-modal__cancel');
+    var confirmEl = overlay.querySelector('.fotobox-modal__confirm');
+
+    function closeModal() { overlay.classList.remove('is-open'); }
+    function startDownload() {
+      closeModal();
+      window.location = base + '?action=download&cat_id=' + catId;
+    }
+
+    cancelEl.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) { closeModal(); }
+    });
+    confirmEl.addEventListener('click', startDownload);
+
+    btn.addEventListener('click', function () {
+      btn.disabled = true;
+      var original = btn.textContent;
+      btn.textContent = 'wird berechnet…';
+      fetch(base + '?action=estimate&cat_id=' + catId, { credentials: 'same-origin' })
+        .then(function (r) {
+          if (!r.ok) { throw new Error('estimate failed'); }
+          return r.json();
+        })
+        .then(function (data) {
+          btn.disabled = false;
+          btn.textContent = original;
+          textEl.textContent = data.count + ' Fotos herunterladen (~' + data.human + ')?';
+          overlay.classList.add('is-open');
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = original;
+          if (window.confirm('Ganzes Album herunterladen?')) { startDownload(); }
+        });
+    });
+  });
+})();
+</script>
