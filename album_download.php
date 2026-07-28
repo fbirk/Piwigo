@@ -128,7 +128,7 @@ SELECT i.id, i.path, i.file, i.filesize, ic.category_id
  */
 function fb_dl_sanitize_segment($name)
 {
-  $name = str_replace(array('/', '\\'), '-', $name);
+  $name = str_replace(array('/', '\\', '"'), array('-', '-', ''), $name);
   $name = preg_replace('/[\x00-\x1F\x7F]/', '', $name); // control chars
   $name = trim($name);
   return $name === '' ? '_' : $name;
