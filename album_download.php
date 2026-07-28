@@ -131,7 +131,11 @@ function fb_dl_sanitize_segment($name)
   $name = str_replace(array('/', '\\', '"'), array('-', '-', ''), $name);
   $name = preg_replace('/[\x00-\x1F\x7F]/', '', $name); // control chars
   $name = trim($name);
-  return $name === '' ? '_' : $name;
+  if ($name === '' or $name === '.' or $name === '..')
+  {
+    return '_';
+  }
+  return $name;
 }
 
 /**
@@ -191,8 +195,10 @@ function fb_dl_local_name($image, $root_cat_id, $cat_names, $cat_uppercats, &$us
 }
 
 /**
- * Fetch id => name and id => uppercats for the categories referenced by the
- * collected images, so we can build zip sub-folders.
+ * Fetch id => name (for the full ancestor set) and id => uppercats (for the
+ * image-bearing categories) so we can build zip sub-folders. Names cover every
+ * ancestor — including container-only sub-albums that hold no images directly —
+ * so each level contributes its folder segment.
  *
  * @param array $images
  * @return array [ $names, $uppercats ]
@@ -208,19 +214,42 @@ function fb_dl_category_maps($images)
   {
     return array(array(), array());
   }
+
+  // uppercats of the image-bearing categories (keyed as fb_dl_local_name expects)
   $query = '
-SELECT id, name, uppercats
+SELECT id, uppercats
   FROM '.CATEGORIES_TABLE.'
   WHERE id IN ('.implode(',', array_map('intval', array_keys($ids))).')
 ;';
   $rows = query2array($query, 'id');
-  $names = array();
+
   $uppercats = array();
+  $all_ids = array();
   foreach ($rows as $id => $row)
   {
-    $names[(int)$id] = $row['name'];
     $uppercats[(int)$id] = $row['uppercats'];
+    foreach (explode(',', $row['uppercats']) as $anc)
+    {
+      $all_ids[(int)$anc] = true;
+    }
   }
+
+  // names for the full ancestor set (container-only sub-albums included)
+  $names = array();
+  if (!empty($all_ids))
+  {
+    $nquery = '
+SELECT id, name
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id IN ('.implode(',', array_map('intval', array_keys($all_ids))).')
+;';
+    $nrows = query2array($nquery, 'id');
+    foreach ($nrows as $id => $row)
+    {
+      $names[(int)$id] = $row['name'];
+    }
+  }
+
   return array($names, $uppercats);
 }
 
@@ -228,7 +257,7 @@ SELECT id, name, uppercats
  * Human-readable byte size, German formatting (comma decimal separator).
  *
  * @param int|float $bytes
- * @return string e.g. "3,4 GB", "812 MB", "0 KB"
+ * @return string e.g. "3,4 GB", "812 MB", "0 B"
  */
 function fb_dl_format_bytes($bytes)
 {
