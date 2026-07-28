@@ -106,3 +106,20 @@ body#theCategoryPage a {
 #menuSwitcher {
   display: none !important;
 }
+
+/* --- Fotobox: keep long album names from overflowing on mobile --- */
+.fotobox-album__name {
+  flex: 1 1 auto;
+  min-width: 0;            /* allow the flex item to shrink below content width */
+  overflow-wrap: anywhere; /* break long underscored names with no spaces */
+}
+.fotobox-album__count {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+@media (max-width: 480px) {
+  ul.fotobox-albums {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
