@@ -224,6 +224,58 @@ SELECT id, name, uppercats
   return array($names, $uppercats);
 }
 
+/**
+ * Human-readable byte size, German formatting (comma decimal separator).
+ *
+ * @param int|float $bytes
+ * @return string e.g. "3,4 GB", "812 MB", "0 KB"
+ */
+function fb_dl_format_bytes($bytes)
+{
+  $units = array('B', 'KB', 'MB', 'GB', 'TB');
+  $i = 0;
+  $b = (float)$bytes;
+  while ($b >= 1024 and $i < count($units) - 1)
+  {
+    $b /= 1024;
+    $i++;
+  }
+  // one decimal for GB/TB, none below that
+  $decimals = ($i >= 3) ? 1 : 0;
+  $formatted = number_format($b, $decimals, ',', '.');
+  return $formatted.' '.$units[$i];
+}
+
+/**
+ * Emit the JSON estimate for the confirm modal. Ends the request.
+ *
+ * @param int $cat_id
+ * @return void
+ */
+function fb_dl_action_estimate($cat_id)
+{
+  $category = fb_dl_require_access($cat_id, 'estimate'); // exits on failure
+  unset($category); // not needed further
+
+  $images = fb_dl_collect_images($cat_id);
+
+  $count = count($images);
+  $kb = 0;
+  foreach ($images as $img)
+  {
+    $kb += $img['filesize']; // KB
+  }
+  $bytes = $kb * 1024;
+
+  header('Content-Type: application/json; charset=utf-8');
+  header('Cache-Control: no-cache, no-store, must-revalidate');
+  echo json_encode(array(
+    'count' => $count,
+    'bytes' => $bytes,
+    'human' => fb_dl_format_bytes($bytes),
+  ));
+}
+
 // ---- Action dispatch -------------------------------------------------------
 
 $cat_id = (isset($_GET['cat_id']) and is_numeric($_GET['cat_id'])) ? (int)$_GET['cat_id'] : 0;
